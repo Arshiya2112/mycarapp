@@ -75,7 +75,7 @@
 // // POST route to create a car
 const express = require('express');
 const router = express.Router();
-const { createProduct, getUserProducts, upload } = require("../controllers/productController.js");
+const { createProduct, getUserProducts, upload, deleteProduct } = require("../controllers/productController.js");
 const { authMiddleware } = require("../middleware/authMiddleware.js")
 // const Car = require('../models/Car');
 const User = require('../models/User');
@@ -84,6 +84,8 @@ const jwt = require('jsonwebtoken');
 
 router.post("/products", authMiddleware, upload.array('images', 10), createProduct);
 router.get("/getproducts", authMiddleware, getUserProducts);
+router.delete("/products/:id", authMiddleware, deleteProduct);
+
 
 module.exports = router;
 // router.post('/create', async (req, res) => {

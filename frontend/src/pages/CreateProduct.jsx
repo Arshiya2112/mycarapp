@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -9,6 +9,10 @@ import API from '../utils/api';
 
 
 const CreateProduct = () => {
+
+  const [file, setFile] = useState()
+  const [image, setImage] = useState()
+  
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -30,41 +34,46 @@ const CreateProduct = () => {
   };
 
   // Handle file input separately
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    const totalImages = files.length + formData.images.length;
-    // if(files.length+formData.images.length<=10)
-    if(totalImages>10) {
-      alert("You can upload a maximum of 10 images");
-      return;
-    }
+  // const handleFileChange = (e) => {
+  //   const files = Array.from(e.target.files);
+  //   const totalImages = files.length + formData.images.length;
+  //   // if(files.length+formData.images.length<=10)
+  //   if(totalImages>10) {
+  //     alert("You can upload a maximum of 10 images");
+  //     return;
+  //   }
     
-      setFormData((prev) => ({
-        ...prev,
-        images: [...prev.images, ...files]
-      }));
+  //     setFormData((prev) => ({
+  //       ...prev,
+  //       images: [...prev.images, ...files]
+  //     }));
     
-  };
+  // };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
+    
     data.append('title', formData.title);
     data.append('description', formData.description);
     data.append('car_type', formData.car_type);
     data.append('company', formData.company);
     data.append('dealer', formData.dealer);
+    data.append("file", file)
+    axios.post("http://localhost:3000/upload", formData)
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
     // formData.images.forEach((image, index) => {
     //   data.append('images', image);
     // });
-    const imageUrls = [];
-    for(let i=0;i<formData.images.length;i++) {
-      const image = formData.images[i];
+    // const imageUrls = [];
+    // for(let i=0;i<formData.images.length;i++) {
+    //   const image = formData.images[i];
 
-      const cloudinaryData = new FormData();
-      cloudinaryData.append("file", image);
-      cloudinaryData.append("upload_preset","product_images");
+    //   const cloudinaryData = new FormData();
+    //   cloudinaryData.append("file", image);
+    //   cloudinaryData.append("upload_preset","product_images");
     
 
     // try {
@@ -80,18 +89,18 @@ const CreateProduct = () => {
     //     },
     //   });
 
-    try {
-      const cloudinaryResponse = await axios.post("https://api.cloudinary.com/v1_1/doakd991u/image/upload", cloudinaryData);
-      imageUrls.push(cloudinaryResponse.data.secure_url);
+    // try {
+    //   const cloudinaryResponse = await axios.post("https://api.cloudinary.com/v1_1/doakd991u/image/upload", cloudinaryData);
+    //   imageUrls.push(cloudinaryResponse.data.secure_url);
 
-    } catch (error) {
-      console.error("Error uploading image to Cloudinary", error);
-      alert("Error uploading image. Please try again");
-      return;
-    }
-    }
+    // } catch (error) {
+    //   console.error("Error uploading image to Cloudinary", error);
+    //   alert("Error uploading image. Please try again");
+    //   return;
+    // }
+    // }
 
-    imageUrls.forEach(url => data.append("images", url));
+    // imageUrls.forEach(url => data.append("images", url));
     try {
       const token = localStorage.getItem("token");
       if(!token) {
@@ -111,6 +120,12 @@ const CreateProduct = () => {
       console.error("Error adding product", err.response? err.response.data : err.message);
       alert("Error adding product. Please try again");
     }
+
+    useEffect(() => {
+      axios.get("http://localhost:3000/details")
+      .then(res => setImage(res.data[0].image))
+      .catch(err => console.log(err))
+    }, [])
     //   console.log("Product Added Successfully", response.data);
       
     //   alert("Product added successfully");
@@ -194,11 +209,13 @@ const CreateProduct = () => {
             <label className="block text-gray-700 text-sm font-bold mb-2">Upload Images (Max 10)</label>
             <input
               type="file"
-              accept="image/*"
+              // accept="image/*"
               multiple
-              onChange={handleFileChange}
+              onChange={e => setFile(e.target.files[0])}
+              onClick={handleUpload}
               className="w-full"
             />
+            {/* <button onClick={handleChange}>Upload</button> */}
           </div>
 
           {formData.images.length>0 && (

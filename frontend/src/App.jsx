@@ -8,6 +8,7 @@ import AllProducts from "./pages/AllProducts"
 import CreateProduct from "./pages/CreateProduct"
 import ProductDetails from "./pages/ProductDetails"
 import ProtectedRoute from "./components/ProtectedRoute"
+import EditProduct from "./components/EditProduct"
 
 // import { Switch } from "@mui/material"
 
@@ -27,6 +28,7 @@ function App() {
       <Route path="/allproducts" element={<AllProducts/>}/>
       <Route path="/createproduct" element={<CreateProduct/>}/>
       <Route path="/details" element={<ProductDetails/>}/>
+      <Route path="/edit/:id" element={<EditProduct/>}/>
       </Route>
       {/* </Switch> */}
       
