@@ -1,9 +1,16 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 
 const Navbar = () => {
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/")
+  };
+
   return (
     
     <>
@@ -23,7 +30,8 @@ const Navbar = () => {
                
                     
                 
-                    <Link to="/"><button className='bg-purple-300 text-purple-600 hover:bg-purple-900 hover:text-purple-300 px-3 py-1 my-2 mx-4 rounded-lg font-bold' >Logout</button></Link>
+                    <Link to="/"><button className='bg-purple-300 text-purple-600 hover:bg-purple-900 hover:text-purple-300 px-3 py-1 my-2 mx-4 rounded-lg font-bold'
+                    onClick={handleLogout} >Logout</button></Link>
                     <button className='bg-violet-500 text-xl font-semibold mr-4 rounded-full px-2 '>U</button>
            
                 </div>

@@ -7,6 +7,7 @@ import Signup from "./pages/Signup"
 import AllProducts from "./pages/AllProducts"
 import CreateProduct from "./pages/CreateProduct"
 import ProductDetails from "./pages/ProductDetails"
+import ProtectedRoute from "./components/ProtectedRoute"
 
 // import { Switch } from "@mui/material"
 
@@ -22,9 +23,11 @@ function App() {
       <Route path="/home" element={<Home/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/signup" element={<Signup/>}/>
+      <Route element={<ProtectedRoute/>}>
       <Route path="/allproducts" element={<AllProducts/>}/>
       <Route path="/createproduct" element={<CreateProduct/>}/>
       <Route path="/details" element={<ProductDetails/>}/>
+      </Route>
       {/* </Switch> */}
       
     </Routes>
