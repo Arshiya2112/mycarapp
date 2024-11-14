@@ -2,28 +2,63 @@ const Product = require('../models/Product'); // Product model
 const multer = require('multer');
 const path = require('path');
 
-// Set up multer storage configuration for image upload
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/'); // Destination folder for images
-  },
-  filename: (req, file, cb) => {
-    const fileName = `${Date.now()}_${file.originalname}`;
-    cb(null, fileName); // Unique name for each image
-  },
+
+const cloudinary = require('cloudinary').v2;
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage, limits: { files: 10 } });
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
 });
 
-const upload = multer({ 
-  storage: storage,
-  limits: {files: 10},
- });
+const uploadImagesToCloudinary = async (files) => {
+  const imageUrls = [];
+  for (const file of files) {
+    try {
+      const result = await cloudinary.uploader.upload(file.buffer, {
+        folder: 'products',
+        upload_preset: 'product_images', // Ensure you've set up a preset in Cloudinary
+      });
+      imageUrls.push(result.secure_url);
+    } catch (err) {
+      console.error('Cloudinary upload error:', err);
+      throw new Error('Error uploading images to Cloudinary');
+    }
+  }
+  return imageUrls;
+};
+
+// Set up multer storage configuration for image upload
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'uploads/'); // Destination folder for images
+//   },
+//   filename: (req, file, cb) => {
+//     const fileName = `${Date.now()}_${file.originalname}`;
+//     cb(null, fileName); // Unique name for each image
+//   },
+// });
+
+// const upload = multer({ 
+//   storage: storage,
+//   limits: {files: 10},
+//  });
 
 // Create product
 const createProduct = async (req, res) => {
   try {
-    const { title, description, car_type, company, dealer } = req.body;
-    const images = req.files.map(file => `/uploads/${file.filename}`);
-    const userId = req.user._id; // Get image file paths
+    const { title, description, car_type, company, dealer, images } = req.body;
+    const imageUrls = await uploadImagesToCloudinary(req.files);
+    const userId = req.user._id;
+    // for(const image of images) {
+    //   const result = await cloudinary.uploader.upload(image.path);
+    //   imageUrls.push(result.secure_url);
+    // }
+    // // const images = req.files.map(file => `/uploads/${file.filename}`);
+    // const userId = req.user._id; // Get image file paths
 
     const newProduct = new Product({
       title,
@@ -31,7 +66,7 @@ const createProduct = async (req, res) => {
       car_type,
       company,
       dealer,
-      images,
+      images: imageUrls,
       userId,  // Reference to the logged-in user
     });
 
@@ -47,6 +82,9 @@ const getUserProducts = async (req, res) => {
   try {
     const userId = req.user._id;
     const products = await Product.find({ userId });
+    products.forEach(product => {
+      console.log(product.images);
+    });
     res.status(200).json(products);
   } catch (err) {
     console.error(err);

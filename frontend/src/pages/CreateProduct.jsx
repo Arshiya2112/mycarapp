@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+
 import axios from "axios";
 import API from '../utils/api';
+// import { CloudinaryContext, Image, Transformation, Video, VideoConfig } from 'cloudinary-react';
+
 
 const CreateProduct = () => {
   const [formData, setFormData] = useState({
@@ -52,10 +55,43 @@ const CreateProduct = () => {
     data.append('car_type', formData.car_type);
     data.append('company', formData.company);
     data.append('dealer', formData.dealer);
-    formData.images.forEach((image, index) => {
-      data.append('images', image);
-    });
+    // formData.images.forEach((image, index) => {
+    //   data.append('images', image);
+    // });
+    const imageUrls = [];
+    for(let i=0;i<formData.images.length;i++) {
+      const image = formData.images[i];
 
+      const cloudinaryData = new FormData();
+      cloudinaryData.append("file", image);
+      cloudinaryData.append("upload_preset","product_images");
+    
+
+    // try {
+    //   const token = localStorage.getItem("token");
+    //   if(!token) {
+    //     alert("You must be logged in to create a product");
+    //     return;
+    //   }
+    //   const response = await axios.post("http://localhost:3000/api/products", data, {
+    //     headers: {
+    //       'Content-Type' : 'multipart/form-data',
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   });
+
+    try {
+      const cloudinaryResponse = await axios.post("https://api.cloudinary.com/v1_1/doakd991u/image/upload", cloudinaryData);
+      imageUrls.push(cloudinaryResponse.data.secure_url);
+
+    } catch (error) {
+      console.error("Error uploading image to Cloudinary", error);
+      alert("Error uploading image. Please try again");
+      return;
+    }
+    }
+
+    imageUrls.forEach(url => data.append("images", url));
     try {
       const token = localStorage.getItem("token");
       if(!token) {
@@ -63,19 +99,26 @@ const CreateProduct = () => {
         return;
       }
       const response = await axios.post("http://localhost:3000/api/products", data, {
-        headers: {
-          'Content-Type' : 'multipart/form-data',
+        headers : {
+          "Content-Type" : "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });
       console.log("Product Added Successfully", response.data);
-      
-      alert("Product added successfully");
+      alert("Product Added Successfully");
       navigate("/allproducts");
     } catch(err) {
-      console.error('Error adding product', err.response?err.response.data:err.message);
-      alert('Error adding product. Please try again');
+      console.error("Error adding product", err.response? err.response.data : err.message);
+      alert("Error adding product. Please try again");
     }
+    //   console.log("Product Added Successfully", response.data);
+      
+    //   alert("Product added successfully");
+    //   navigate("/allproducts");
+    // } catch(err) {
+    //   console.error('Error adding product', err.response?err.response.data:err.message);
+    //   alert('Error adding product. Please try again');
+    // }
     // Process form submission here, e.g., send data to backend
     // console.log('Form submitted:', formData);
   };

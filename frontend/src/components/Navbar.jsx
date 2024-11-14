@@ -19,7 +19,7 @@ const Navbar = () => {
                     
             </div>
                 <div className='my-2 flex items-center'>
-                <input type="text" placeholder='Search' className='w-48 rounded-lg bg-slate-200 pl-4 text-lg outline-none focus:ring-purple-500 focus:bg-white' />
+                {/* <input type="text" placeholder='Search' className='w-48 rounded-lg bg-slate-200 pl-4 text-lg outline-none focus:ring-purple-500 focus:bg-white' /> */}
                
                     
                 
