@@ -212,7 +212,7 @@ const CreateProduct = () => {
               // accept="image/*"
               multiple
               onChange={e => setFile(e.target.files[0])}
-              onClick={handleUpload}
+              onClick={handleSubmit}
               className="w-full"
             />
             {/* <button onClick={handleChange}>Upload</button> */}
