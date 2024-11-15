@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import axios from "axios";
+import { backend_url } from '../server';
 
 const CreateProduct = () => {
   const [formData, setFormData] = useState({
@@ -63,7 +64,7 @@ const CreateProduct = () => {
         return;
       }
 
-      const response = await axios.post("http://localhost:3000/api/products", data, {
+      const response = await axios.post(`${backend_url}/products`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,

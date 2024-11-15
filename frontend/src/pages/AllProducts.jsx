@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import axios from 'axios';
+import { backend_url } from '../server';
 
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
@@ -12,7 +13,7 @@ const AllProducts = () => {
     const fetchProducts = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:3000/api/getproducts", {
+        const response = await axios.get(`${backend_url}/getproducts`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

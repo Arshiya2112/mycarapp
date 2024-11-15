@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios';
 import Footer from './Footer';
+import { backend_url } from '../server';
 
 const EditProduct = () => {
     const { id } = useParams();
@@ -18,7 +19,7 @@ const EditProduct = () => {
         const fetchCarDetails = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await axios.get(`http://localhost:3000/api/products/${id}`, {
+                const response = await axios.get(`${backend_url}products/${id}`, {
                     headers : { Authorization: `Bearer ${token}` }
                 });
                 setFormData(response.data);

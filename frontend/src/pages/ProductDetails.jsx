@@ -3,6 +3,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
+import { backend_url } from '../server';
 
 const ProductDetails = () => {
   const [products, setProducts] = useState([]);
@@ -13,7 +14,7 @@ const ProductDetails = () => {
     const fetchProducts = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get("http://localhost:3000/api/getproducts", {
+        const response = await axios.get(`${backend_url}/getproducts`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setProducts(response.data);
@@ -27,7 +28,7 @@ const ProductDetails = () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`http://localhost:3000/api/products/${id}`, {
+      await axios.delete(`${backend_url}/products/${id}`, {
         headers : { Authorization: `Bearer ${token}`},
       });
       alert("Product deleted successfulyy");
