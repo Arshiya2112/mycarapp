@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { backend_url } from "../server";
 
 // Set up axios to point to the backend API
 const API = axios.create({
-  baseURL: 'http://localhost:3000/api',
+  baseURL: `${backend_url}`,
 });
 
 // Add a request interceptor to add JWT token in headers for protected routes
