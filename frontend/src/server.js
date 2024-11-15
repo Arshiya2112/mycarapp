@@ -1,1 +1,1 @@
-export const backend_url = "http://mycarapp-api.vercel.app/api"
+export const backend_url = "http://mycarapp-myapi.vercel.app/api"
