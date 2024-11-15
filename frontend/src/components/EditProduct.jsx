@@ -43,7 +43,7 @@ const EditProduct = () => {
         e.preventDefault();
         try {
             const token = localStorage.getItem("token");
-            await axios.put(`http://localhost:3000/api/products/${id}`, formData, {
+            await axios.put(`${backend_url}/products/${id}`, formData, {
                 headers: { Authorization: `Bearer ${token}`}
             });
             alert("Car details updated successfully");
