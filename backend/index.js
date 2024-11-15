@@ -11,11 +11,8 @@ dotenv.config();
 const app =express();
 app.use(express.json());
 app.use(cors({ 
-  origin: ["http://mycarapp-ai9d.vercel.app" ],
-            methods: ["POST", "GET"],
-            credentials: true
-  }
-  ));
+  origin: "http://localhost:5173"
+  }));
 
 
 
