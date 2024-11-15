@@ -22,12 +22,12 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   images: {
-    type: [String], // An array of image URLs (up to 10 images)
+    type: [String], 
     validate: [arrayLimit, '{PATH} exceeds the limit of 10'],
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to the user who created the car
+    ref: 'User', 
     required: true,
   },
 });

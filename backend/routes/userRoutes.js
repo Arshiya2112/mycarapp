@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 const router = express.Router();
 const { login } = require("../controllers/authController.js")
 
-// Signup Route
+
 router.post('/signup', async (req, res) => {
   const { email, password, firstName, lastName } = req.body;
   if(!email || !password || !firstName || !lastName) {
@@ -28,7 +28,7 @@ router.post('/signup', async (req, res) => {
   
 });
 
-// Login Route
+
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });

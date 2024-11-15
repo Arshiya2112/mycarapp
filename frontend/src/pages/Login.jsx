@@ -14,6 +14,12 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
+    
+
+    const handleClick = () => {
+        navigate("/")
+    }
+
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
@@ -30,7 +36,7 @@ const Login = () => {
   return (
     <div>
         <div className='bg-purple-800 text-white flex justify-between'>
-            <div className='font-bold px-4 py-2 cursor-pointer my-2 text-2xl'>ManageMyCars</div>
+            <div className='font-bold px-4 py-2 cursor-pointer my-2 text-2xl' onClick={handleClick}>ManageMyCars</div>
                 <div className='my-2'>
                     
                     <Link to="/signup"><button className='bg-white text-purple-600 hover:bg-purple-900 hover:text-purple-700 px-3 py-1 my-2 mx-4 rounded-lg font-bold' >Signup</button></Link>

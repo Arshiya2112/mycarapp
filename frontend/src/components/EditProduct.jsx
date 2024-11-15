@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from 'axios';
+import Footer from './Footer';
 
 const EditProduct = () => {
     const { id } = useParams();
@@ -45,13 +46,14 @@ const EditProduct = () => {
                 headers: { Authorization: `Bearer ${token}`}
             });
             alert("Car details updated successfully");
-            navigate("/details/${id}");
+            navigate("/details");
         } catch(error) {
             console.error("Error updating car details", error);
             alert("Failed to update car details");
         }
     };
   return (
+    <>
     <div className="max-w-md mx-auto bg-white p-8 rounded-lg shadow-md my-4">
       <h2 className="text-2xl font-bold mb-6 text-purple-800">Edit Product</h2>
       <form onSubmit={handleSubmit}>
@@ -81,7 +83,7 @@ const EditProduct = () => {
           <label className="block text-gray-700 text-sm font-bold mb-2">Car_Type</label>
           <input
             type="text"
-            name="title"
+            name="car_type"
             value={formData.car_type}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-purple-500"
@@ -92,7 +94,7 @@ const EditProduct = () => {
           <label className="block text-gray-700 text-sm font-bold mb-2">Company</label>
           <input
             type="text"
-            name="title"
+            name="company"
             value={formData.company}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-purple-500"
@@ -103,7 +105,7 @@ const EditProduct = () => {
           <label className="block text-gray-700 text-sm font-bold mb-2">Dealer</label>
           <input
             type="text"
-            name="title"
+            name="dealer"
             value={formData.dealer}
             onChange={handleChange}
             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-purple-500"
@@ -119,6 +121,8 @@ const EditProduct = () => {
         </button>
       </form>
         </div>
+        <Footer/>
+        </>
   )
 }
 

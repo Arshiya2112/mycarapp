@@ -10,7 +10,7 @@ import ProductDetails from "./pages/ProductDetails"
 import ProtectedRoute from "./components/ProtectedRoute"
 import EditProduct from "./components/EditProduct"
 
-// import { Switch } from "@mui/material"
+
 
 function App() {
   
@@ -19,7 +19,7 @@ function App() {
     <>
     <Routes>
       
-      {/* <Switch> */}
+      
       <Route path="/" element={<Navigate to="/home"/>}/>
       <Route path="/home" element={<Home/>}/>
       <Route path="/login" element={<Login/>}/>
@@ -28,9 +28,9 @@ function App() {
       <Route path="/allproducts" element={<AllProducts/>}/>
       <Route path="/createproduct" element={<CreateProduct/>}/>
       <Route path="/details" element={<ProductDetails/>}/>
-      <Route path="/edit/:id" element={<EditProduct/>}/>
+      <Route path="/edit-product/:id" element={<EditProduct/>}/>
       </Route>
-      {/* </Switch> */}
+      
       
     </Routes>
     </>
