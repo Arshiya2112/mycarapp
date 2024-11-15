@@ -7,6 +7,7 @@ import { BottomWarning } from '../components/BottomWarning'
 import { Button } from '../components/Button'
 import Footer from '../components/Footer'
 import API from "../utils/api.js"
+import { backend_url } from "../server";
 
 const Login = () => {
 
@@ -23,7 +24,7 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const { data } = await API.post("/users/login", { email, password });
+            const { data } = await API.post(`${backend_url}/users/login`, { email, password });
             localStorage.setItem('token', data.token);
             alert("Logged in successfully");
             navigate('/allproducts');
